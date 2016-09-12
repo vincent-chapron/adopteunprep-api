@@ -1,0 +1,28 @@
+{
+  "name": "adopteunprep",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "nodemon ./bin/www",
+    "test": "mocha test/config"
+  },
+  "dependencies": {
+    "bcrypt": "^0.8.6",
+    "body-parser": "~1.13.2",
+    "cookie-parser": "~1.3.5",
+    "debug": "~2.2.0",
+    "express": "~4.13.1",
+    "jade": "~1.11.0",
+    "jsonwebtoken": "^7.1.9",
+    "mongoose": "^4.4.19",
+    "morgan": "~1.6.1",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.0.0",
+    "request": "^2.72.0",
+    "serve-favicon": "~2.3.0",
+    "sync-request": "^3.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  }
+}
