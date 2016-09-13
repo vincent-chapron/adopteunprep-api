@@ -28,7 +28,20 @@ router.get('/projects', passport.authenticate('jwt', { session: false }), (req, 
 
     rq.then(({error, response, body}) => {
         if (response.statusCode == 200) {
-            res.json({success: true, data: body});
+            let projects = []
+            console.log(body)
+            for (var ue in body) {
+                if(body.hasOwnProperty(ue)) {
+                    const data = body[ue]
+                    if (data.hasOwnProperty("activities")) {
+                        data.activities.forEach(activity => {
+                            if (activity.type == "project") projects.push(activity)
+                        })
+                    }
+                }
+            }
+
+            res.json(projects);
         } else {
             res.statusCode = response.statusCode;
             res.json({success: false});

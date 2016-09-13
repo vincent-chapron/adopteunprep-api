@@ -1,6 +1,8 @@
 var express = require('express');
 var request = require('request');
 var Observable = require('rxjs/Observable').Observable;
+require('rxjs/add/observable/fromPromise')
+require('rxjs/add/observable/forkJoin')
 var router  = express.Router();
 
 var config_app  = require('../config/application');
