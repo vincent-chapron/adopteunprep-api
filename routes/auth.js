@@ -24,7 +24,7 @@ router.post('/login', (req, res, next) => {
 
     rq.then(({error, response, body}) => {
         if (response.statusCode == 200) {
-            const token = jwt.sign({}, config_app.secret, {expiresIn: 604800, issuer: body.login});
+            const token = jwt.sign({user: body}, config_app.secret, {expiresIn: 604800, issuer: body.login});
             const cookie = response.headers["set-cookie"].toString();
             return res.json({success: true, token, cookie});
         }

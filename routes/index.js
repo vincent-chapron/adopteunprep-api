@@ -1,9 +1,10 @@
 var express = require('express');
 var passport = require('passport');
-var request = require('request')
+var request = require('request');
 var router  = express.Router();
 
 var routes_auth = require('./auth');
+var routes_group = require('./group');
 
 var User = require('../models/users/users');
 
@@ -82,3 +83,4 @@ router.post('/projects/:id/sessions/:session', passport.authenticate('jwt', { se
 });
 
 router.use('/', routes_auth);
+router.use('/', routes_group);
