@@ -63,7 +63,7 @@ router.get('/projects/:id/sessions/:session', passport.authenticate('jwt', { ses
 
     rq.then(({error, response, body}) => {
         if (response.statusCode == 200) {
-            res.json({success: true, data: body});
+            res.json(body);
         } else {
             res.statusCode = response.statusCode;
             res.json({success: false});
@@ -86,7 +86,7 @@ router.post('/projects/:id/sessions/:session', passport.authenticate('jwt', { se
 
     rq.then(({error, response, body}) => {
         if (response.statusCode == 200) {
-            res.json({success: true, data: body});
+            res.json(body);
         } else {
             console.log(body)
             res.statusCode = response.statusCode;

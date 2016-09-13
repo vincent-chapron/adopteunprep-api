@@ -1,5 +1,6 @@
 var express = require('express');
 var request = require('request');
+var passport = require('passport');
 var Observable = require('rxjs/Observable').Observable;
 require('rxjs/add/observable/fromPromise')
 require('rxjs/add/observable/forkJoin')
@@ -9,7 +10,7 @@ var config_app  = require('../config/application');
 
 module.exports = router;
 
-router.get('/projects/:id/sessions/:session/groups/me', (req, res, next) => {
+router.get('/projects/:id/sessions/:session/groups/me', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     const options = {
         method: 'GET',
         url: `https://prepintra-api.etna-alternance.net/sessions/${req.params.session}/project/${req.params.id}/mygroup`,
@@ -32,7 +33,7 @@ router.get('/projects/:id/sessions/:session/groups/me', (req, res, next) => {
     })
 });
 
-router.get('/projects/:id/sessions/:session/available/students', (req, res, next) => {
+router.get('/projects/:id/sessions/:session/available/students', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     const options = {
         method: 'GET',
         json: true,
@@ -51,20 +52,28 @@ router.get('/projects/:id/sessions/:session/available/students', (req, res, next
         request(options, (error, response, body) => done({error, response, body}))
     })
 
+    let groupsOptions = options;
+    groupsOptions.url = `https://prepintra-api.etna-alternance.net/sessions/${req.params.session}/project/${req.params.id}/groups`
+    groups = new Promise(done => {
+        request(options, (error, response, body) => done({error, response, body}))
+    })
+
     Observable.forkJoin(
         Observable.fromPromise(group),
-        Observable.fromPromise(unsubscribe)
+        Observable.fromPromise(unsubscribe),
+        Observable.fromPromise(groups)
     ).subscribe(data => {
-        res.json(data)
+        if (data[0].response.statusCode === 200) {
+            if (data[0].body.leader.login == req.user) {
+                return res.json(data[1].body)
+            }
+            return res.json([])
+        } else {
+            let leaders = []
+            data[2].body.forEach(group => {
+                leaders.push(group.leader)
+            })
+            return res.json(leaders)
+        }
     });
-
-    // JAI UN GROUPE ?
-        // OUI
-            // CHEF DE GROUPE ?
-                // OUI
-                    // CEUX QUI N'ONT PAS DE GROUPE
-                // NON
-                    // RIEN
-        // NON
-            // VOIR LES CHEFS DE GROUPE
 });
