@@ -69,7 +69,6 @@ router.post('/like/:login', passport.authenticate('jwt', { session: false }), (r
     const data = {
         project_id: req.body.project_id,
         session_id: req.body.session_id,
-        group_id: req.body.group_id,
         login: req.user,
         like: req.params.login
     };
@@ -93,7 +92,7 @@ router.post('/like/:login', passport.authenticate('jwt', { session: false }), (r
     })
 });
 
-router.delete('/projects/:id/sessions/:session/group/:group', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.delete('/projects/:id/sessions/:session/groups/:group', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     const options = {
         method: 'GET',
         url: `https://prepintra-api.etna-alternance.net/sessions/${req.params.session}/project/${req.params.id}/group/${req.params.group}`,

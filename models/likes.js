@@ -10,9 +10,6 @@ let LikeSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    group_id: {
-        type: Number
-    },
     login: {
         type: String,
         lowercase: true,
