@@ -21,7 +21,7 @@ module.exports = app;
  * INIT PASSPORT & MONGOOSE
  */
 app.use(passport.initialize());
-// mongoose.connect(db.mongo_db);
+mongoose.connect(db.mongo_db);
 require('./config/passport')(passport);
 
 // view engine setup

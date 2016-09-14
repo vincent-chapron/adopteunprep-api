@@ -6,8 +6,6 @@ var router  = express.Router();
 var routes_auth = require('./auth');
 var routes_group = require('./group');
 
-var User = require('../models/users/users');
-
 module.exports = router;
 
 router.get('/', (req, res, next) => {
