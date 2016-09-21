@@ -1,9 +1,9 @@
-var express = require('express');
-var jwt     = require('jsonwebtoken');
-var request = require('request');
-var router  = express.Router();
+const express = require('express');
+const jwt     = require('jsonwebtoken');
+const request = require('request');
+const router  = express.Router();
 
-var config_app  = require('../config/application');
+const config_app  = require('../config/application');
 
 module.exports = router;
 

@@ -1,10 +1,11 @@
-var express = require('express');
-var passport = require('passport');
-var request = require('request');
-var router  = express.Router();
+const express = require('express');
+const passport = require('passport');
+const request = require('request');
+const router  = express.Router();
 
-var routes_auth = require('./auth');
-var routes_group = require('./group');
+const routes_auth = require('./auth');
+const routes_group = require('./group');
+const validation = require('../middleware/validation');
 
 module.exports = router;
 
@@ -12,7 +13,7 @@ router.get('/', (req, res, next) => {
     res.json({});
 });
 
-router.get('/projects', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.get('/projects', passport.authenticate('jwt', { session: false }), validation, (req, res, next) => {
     const options = {
         method: 'GET',
         url: `https://prepintra-api.etna-alternance.net/students/${req.user}/currentactivities`,
@@ -47,7 +48,7 @@ router.get('/projects', passport.authenticate('jwt', { session: false }), (req, 
     })
 });
 
-router.get('/projects/:id/sessions/:session', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.get('/projects/:id/sessions/:session', passport.authenticate('jwt', { session: false }), validation, (req, res, next) => {
     const options = {
         method: 'GET',
         url: `https://modules-api.etna-alternance.net/${req.params.session}/activities/${req.params.id}`,
@@ -69,7 +70,7 @@ router.get('/projects/:id/sessions/:session', passport.authenticate('jwt', { ses
     })
 });
 
-router.post('/projects/:id/sessions/:session', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.post('/projects/:id/sessions/:session', passport.authenticate('jwt', { session: false }), validation, (req, res, next) => {
     const options = {
         method: 'POST',
         url: `https://prepintra-api.etna-alternance.net/sessions/${req.params.session}/project/${req.params.id}/group `,
