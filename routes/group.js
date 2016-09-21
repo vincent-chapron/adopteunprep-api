@@ -43,7 +43,7 @@ router.post('/like/:login', passport.authenticate('jwt', { session: false }), va
 
 router.delete('/projects/:id/sessions/:session/groups/:group', passport.authenticate('jwt', { session: false }), validation, (req, res, next) => {
     const options = {
-        method: 'GET',
+        method: 'DELETE',
         url: `https://prepintra-api.etna-alternance.net/sessions/${req.params.session}/project/${req.params.id}/group/${req.params.group}`,
         json: true,
         headers: {Cookie: req.headers.cookie}

@@ -7,7 +7,6 @@ const groups = require('../helpers/groups');
 const Like = require('../models/likes');
 
 module.exports = (req, res, next) => {
-    console.log("VALIDATION")
     const my_likes = new Promise(done => {
         Like.find({login: req.user}, (err,docs) => done({err, docs}));
     });
@@ -66,7 +65,6 @@ module.exports = (req, res, next) => {
             })
 
             Observable.forkJoin(obs2).subscribe(data2 => {
-                console.log("VALIDATION NEXT")
                 next()
             })
         })
