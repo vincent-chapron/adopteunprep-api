@@ -7,6 +7,7 @@ const groups = require('../helpers/groups');
 const Like = require('../models/likes');
 
 module.exports = (req, res, next) => {
+    console.log("VALIDATION")
     const my_likes = new Promise(done => {
         Like.find({login: req.user}, (err,docs) => done({err, docs}));
     });
@@ -33,6 +34,8 @@ module.exports = (req, res, next) => {
         let obs = likes.map(like => {
             return Observable.fromPromise(groups.findMyGroup(req.headers.cookie, like.session_id, like.project_id))
         })
+
+        if (obs.length == 0) return next()
 
         Observable.forkJoin(obs).subscribe(data => {
 
@@ -63,6 +66,7 @@ module.exports = (req, res, next) => {
             })
 
             Observable.forkJoin(obs2).subscribe(data2 => {
+                console.log("VALIDATION NEXT")
                 next()
             })
         })
