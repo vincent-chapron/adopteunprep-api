@@ -100,14 +100,14 @@ router.get('/projects/:id/sessions/:session/available/students', passport.authen
 
     let groupsOptions = options;
     groupsOptions.url = `https://prepintra-api.etna-alternance.net/sessions/${req.params.session}/project/${req.params.id}/groups`
-    groups = new Promise(done => {
+    let _groups = new Promise(done => {
         request(options, (error, response, body) => done({error, response, body}))
     })
 
     Observable.forkJoin(
         Observable.fromPromise(group),
         Observable.fromPromise(unsubscribe),
-        Observable.fromPromise(groups)
+        Observable.fromPromise(_groups)
     ).subscribe(data => {
         if (data[0].response.statusCode === 200) {
             if (data[0].body.leader.login == req.user) {
