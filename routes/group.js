@@ -49,11 +49,22 @@ router.delete('/projects/:id/sessions/:session/groups/:group', passport.authenti
         headers: {Cookie: req.headers.cookie}
     }
 
-    rq = new Promise(done => {
+    let deletion = new Promise(done => {
+        Like.remove({$or: [
+            {login: req.user},
+            {like: req.user}
+        ], project_id: req.params.id, session_id: req.params.session}, (err,docs) => done({err, docs}))
+    })
+
+    let rq = new Promise(done => {
         request(options, (error, response, body) => done({error, response, body}))
     })
 
-    rq.then(({error, response, body}) => {
+    Observable.forkJoin([
+        Observable.fromPromise(deletion),
+        Observable.fromPromise(rq)
+    ]).subscribe(data => {
+        let {error, response, body} = data[1]
         if (response.statusCode == 200) {
             res.json(body);
         } else {
